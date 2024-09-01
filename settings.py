@@ -12,3 +12,6 @@ class Settings:
         self.screen_height = 800
         self.bg_color = (138, 43, 226)
         
+        # Ship settings
+        self.ship_speed = 2  # Ship movement speed in pixels per second
+        
