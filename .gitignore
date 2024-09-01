@@ -1,0 +1,9 @@
+__pycache__/
+
+# Exclude user-specific settings
+.vscode/settings.json
+.vscode/keybindings.json
+
+# Include project-specific settings
+!.vscode/launch.json
+!.vscode/tasks.json
