@@ -35,6 +35,7 @@ class ShipShooter:
         self.aliens: pygame.sprite.Group[Alien] = pygame.sprite.Group()
         
         self._create_fleet()
+        self.game_active = True
 
     def run_game(self) -> None:
         """
@@ -43,11 +44,12 @@ class ShipShooter:
         """
         while True:
             self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
-            self._update_screen()
-            self.clock.tick(60)
+            if self.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+                self._update_screen()
+                self.clock.tick(60)
             
     def _check_events(self) -> None:
         """
@@ -136,7 +138,12 @@ class ShipShooter:
         self.aliens.empty()
         self._create_fleet()
         self.ship.center_ship()
-        sleep(0.5)
+        
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
+            sleep(0.5)
+        else:
+            self.game_active = False
         
     def _create_fleet(self) -> None:
         """
