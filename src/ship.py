@@ -46,7 +46,7 @@ class Ship:
         self.screen.blit(self.image, self.rect)
     
     def center_ship(self) -> None:
-        self.rect.center = self.screen_rect.midbottom
+        self.rect.midbottom = self.screen_rect.midbottom
         self.x = self.rect.x    
         
     

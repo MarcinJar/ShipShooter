@@ -133,7 +133,6 @@ class ShipShooter:
         pygame.display.flip()
         
     def _ship_hit(self) -> None:
-        self.stats.ships_left -= 1
         self.bullets.empty()
         self.aliens.empty()
         self._create_fleet()
