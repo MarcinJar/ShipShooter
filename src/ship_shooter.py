@@ -114,6 +114,8 @@ class ShipShooter:
     def _update_aliens(self) -> None:
         self._check_fleet_edges()
         self.aliens.update()
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship hit!")
     
     def _update_screen(self) -> None:
         """
