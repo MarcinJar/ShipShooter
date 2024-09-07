@@ -44,5 +44,11 @@ class Ship:
         The ship's image is drawn at the position specified by the ship's rectangle.
         """
         self.screen.blit(self.image, self.rect)
+    
+    def center_ship(self) -> None:
+        self.rect.center = self.screen_rect.midbottom
+        self.x = self.rect.x    
+        
+    
 
         

@@ -14,6 +14,7 @@ class Settings:
         
         # Ship settings
         self.ship_speed = 2  # Ship movement speed in pixels per second
+        self.ship_limit = 3  # Number of ships allowed on screen
         
         # Bullet settings
         self.bullet_speed = 5.0  # Bullet movement speed in pixels per second

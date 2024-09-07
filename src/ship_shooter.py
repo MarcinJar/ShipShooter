@@ -1,6 +1,8 @@
 import sys
+from time import sleep
 import pygame
 
+from game_stats import GameState
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
@@ -24,10 +26,9 @@ class ShipShooter:
         width = self.settings.screen_width
         height = self.settings.screen_height
         self.screen = pygame.display.set_mode((width, height))
+        pygame.display.set_caption("Ship Shooter")
         
-        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        # self.settings.screen_width = self.screen.get_rect().width
-        # self.settings.screen_height = self.screen.get_rect().height
+        self.stats = GameState(self)
         
         self.ship = Ship(self)
         self.bullets: pygame.sprite.Group[Bullet] = pygame.sprite.Group()
@@ -35,8 +36,6 @@ class ShipShooter:
         
         self._create_fleet()
 
-        pygame.display.set_caption("Ship Shooter")
-        
     def run_game(self) -> None:
         """
         Run the main loop for the game.
@@ -115,7 +114,8 @@ class ShipShooter:
         self._check_fleet_edges()
         self.aliens.update()
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship hit!")
+            self._ship_hit()
+        self._check_aliens_bottom()
     
     def _update_screen(self) -> None:
         """
@@ -129,6 +129,14 @@ class ShipShooter:
         self.aliens.draw(self.screen)
         
         pygame.display.flip()
+        
+    def _ship_hit(self) -> None:
+        self.stats.ships_left -= 1
+        self.bullets.empty()
+        self.aliens.empty()
+        self._create_fleet()
+        self.ship.center_ship()
+        sleep(0.5)
         
     def _create_fleet(self) -> None:
         """
@@ -163,6 +171,11 @@ class ShipShooter:
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
         
+    def _check_aliens_bottom(self) -> bool:
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= self.settings.screen_height:
+                self._ship_hit()
+                break
 
 if __name__ == '__main__':
     game = ShipShooter()
