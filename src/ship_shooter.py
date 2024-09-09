@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 
 from game_stats import GameState
+from button import Button
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
@@ -35,7 +36,9 @@ class ShipShooter:
         self.aliens: pygame.sprite.Group[Alien] = pygame.sprite.Group()
         
         self._create_fleet()
-        self.game_active = True
+        self.game_active = False
+        
+        self.play_button = Button(self, "Play")
 
     def run_game(self) -> None:
         """
@@ -44,11 +47,11 @@ class ShipShooter:
         """
         while True:
             self._check_events()
+            self._update_screen()
             if self.game_active:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
-                self._update_screen()
                 self.clock.tick(60)
             
     def _check_events(self) -> None:
@@ -62,8 +65,21 @@ class ShipShooter:
                 self._check_keydown_envents(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+                
+    def _check_play_button(self, mouse_pos) -> None:
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.game_active:
+            self.stats.reset_stats()
+            self.game_active = True
+            self.ship.center_ship()
+            self.bullets.empty()
+            self.aliens.empty()
+            self._create_fleet()
+            pygame.mouse.set_visible(False)
              
-                    
     def _check_keydown_envents(self, event) -> None:
         """
         Check for key press events and update the ship's movement flags accordingly.
@@ -78,6 +94,9 @@ class ShipShooter:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
+        elif event.key == pygame.K_g:
+            self.game_active = True
+            pygame.mouse.set_visible(False)
             
     def _fire_bullet(self) -> None:
         """
@@ -130,6 +149,9 @@ class ShipShooter:
         self.ship.blitme()
         self.aliens.draw(self.screen)
         
+        if not self.game_active:
+            self.play_button.draw_button()
+        
         pygame.display.flip()
         
     def _ship_hit(self) -> None:
@@ -143,6 +165,7 @@ class ShipShooter:
             sleep(0.5)
         else:
             self.game_active = False
+            pygame.mouse.set_visible(True)
         
     def _create_fleet(self) -> None:
         """
