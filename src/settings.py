@@ -26,6 +26,51 @@ class Settings:
         # alien settings
         self.alien_speed = 1.0  # Alien movement speed in pixels per second
         self.fleet_drop_speed = 10  # Alien drop speed in pixels per second
+        
         self.fleet_direction = 1  # 1 for right, -1 for left
+        
+        self.speedup_scale = 1.1  # Speed-up multiplier
+        self.initial_ship_speed = 1.5  # Initial ship speed
+        self.initial_bullet_speed = 3.0  # Initial bullet speed
+        self.initial_alien_speed = 0.5  # Initial alien speed
+        self.initial_fleet_drop_speed = 5  # Initial alien drop speed
+        
+        self.initialize_dynamic_settings()
+        
+    def initialize_dynamic_settings(self):
+        """
+        Initialize settings that change throughout the game.
+        """
+        self.ship_speed = self.initial_ship_speed * self.speedup_scale
+        self.bullet_speed = self.initial_bullet_speed * self.speedup_scale
+        self.alien_speed = self.initial_alien_speed * self.speedup_scale
+        self.fleet_drop_speed = self.initial_fleet_drop_speed * self.speedup_scale
+        
+    def increase_speed(self):
+        """
+        Increase the speed settings by a factor of speedup_scale.
+        """
+        self.ship_speed *= self.speedup_scale
+        self.bullet_speed *= self.speedup_scale
+        self.alien_speed *= self.speedup_scale
+        self.fleet_drop_speed *= self.speedup_scale
+        
+    def set_easy_level(self):
+        self.ship_speed = self.initial_ship_speed * self.speedup_scale
+        self.bullet_speed = self.initial_bullet_speed * self.speedup_scale
+        self.alien_speed = self.initial_alien_speed * self.speedup_scale
+        self.fleet_drop_speed = self.initial_fleet_drop_speed * self.speedup_scale
+        
+    def set_medium_level(self):
+        self.ship_speed *= 3
+        self.bullet_speed = 3
+        self.alien_speed *= 3
+        self.fleet_drop_speed *= 3
+        
+    def set_hight_level(self):
+        self.ship_speed *= 8
+        self.bullet_speed = 8
+        self.alien_speed *= 8
+        self.fleet_drop_speed *= 8
         
         

@@ -79,6 +79,7 @@ class ShipShooter:
             self.aliens.empty()
             self._create_fleet()
             pygame.mouse.set_visible(False)
+            self.settings.initialize_dynamic_settings()
              
     def _check_keydown_envents(self, event) -> None:
         """
@@ -97,7 +98,16 @@ class ShipShooter:
         elif event.key == pygame.K_g:
             self.game_active = True
             pygame.mouse.set_visible(False)
-            
+        elif event.key == pygame.K_z:
+            self.game_active = False
+            pygame.mouse.set_visible(True)
+        elif event.key == pygame.K_i:
+            self.settings.set_easy_level()
+        elif event.key == pygame.K_m:
+            self.settings.set_medium_level()
+        elif event.key == pygame.K_h:
+            self.settings.set_hight_level()
+                        
     def _fire_bullet(self) -> None:
         """
         Create a new bullet and add it to the bullets group.
@@ -130,6 +140,7 @@ class ShipShooter:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
                 
     def _update_aliens(self) -> None:
         self._check_fleet_edges()
@@ -166,6 +177,7 @@ class ShipShooter:
         else:
             self.game_active = False
             pygame.mouse.set_visible(True)
+            self.settings.initialize_dynamic_settings()
         
     def _create_fleet(self) -> None:
         """
