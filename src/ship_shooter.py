@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 
 from game_stats import GameState
+from scoreboard import Scoreboard
 from button import Button
 from settings import Settings
 from ship import Ship
@@ -30,6 +31,7 @@ class ShipShooter:
         pygame.display.set_caption("Ship Shooter")
         
         self.stats = GameState(self)
+        self.sb = Scoreboard(self)
         
         self.ship = Ship(self)
         self.bullets: pygame.sprite.Group[Bullet] = pygame.sprite.Group()
@@ -70,6 +72,11 @@ class ShipShooter:
                 self._check_play_button(mouse_pos)
                 
     def _check_play_button(self, mouse_pos) -> None:
+        """
+        Check if the play button has been clicked and start the game if it has.
+        Parameters:
+        mouse_pos (tuple): The current position of the mouse cursor.
+        """
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
             self.stats.reset_stats()
@@ -80,6 +87,7 @@ class ShipShooter:
             self._create_fleet()
             pygame.mouse.set_visible(False)
             self.settings.initialize_dynamic_settings()
+
              
     def _check_keydown_envents(self, event) -> None:
         """
@@ -159,6 +167,7 @@ class ShipShooter:
             
         self.ship.blitme()
         self.aliens.draw(self.screen)
+        self.sb.show_score()
         
         if not self.game_active:
             self.play_button.draw_button()
@@ -221,7 +230,3 @@ class ShipShooter:
 if __name__ == '__main__':
     game = ShipShooter()
     game.run_game()
-
-          
-
-      
