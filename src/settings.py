@@ -35,6 +35,8 @@ class Settings:
         self.initial_alien_speed = 0.5  # Initial alien speed
         self.initial_fleet_drop_speed = 5  # Initial alien drop speed
         
+        self.alien_points = 50  # Points for destroying an alien
+        
         self.initialize_dynamic_settings()
         
     def initialize_dynamic_settings(self):
